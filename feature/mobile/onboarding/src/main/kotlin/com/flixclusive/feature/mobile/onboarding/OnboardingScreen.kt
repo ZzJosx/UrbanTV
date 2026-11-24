@@ -84,18 +84,11 @@ internal fun OnboardingScreen(
 
     var notificationsGranted by remember { mutableStateOf(PermissionUtil.isNotificationsGranted(context)) }
     var storageAccessGranted by remember { mutableStateOf(PermissionUtil.isStorageAccessGranted(context)) }
-    var unknownSourcesAllowed by remember { mutableStateOf(PermissionUtil.isUnknownSourcesAllowed(context)) }
 
     val grantedPermissions = remember(context) {
         PermissionUtil.getPreGrantedPermissions(
             context = context,
-            excludedPermissions = mutableSetOf(
-                Manifest.permission.REQUEST_INSTALL_PACKAGES,
-            ).also {
-                if (Build.VERSION.SDK_INT >= 33) {
-                    it.add(Manifest.permission.POST_NOTIFICATIONS)
-                }
-            },
+            excludedPermissions = setOf(Manifest.permission.POST_NOTIFICATIONS),
         )
     }
 
@@ -119,12 +112,6 @@ internal fun OnboardingScreen(
         storageAccessGranted = isWritingGranted && isReadingGranted
     }
 
-    val unknownSourcesSettingsLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),
-    ) {
-        unknownSourcesAllowed = PermissionUtil.isUnknownSourcesAllowed(context)
-    }
-
     val storageDirectoryPicker = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocumentTree(),
     ) { uri ->
@@ -140,7 +127,6 @@ internal fun OnboardingScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 notificationsGranted = PermissionUtil.isNotificationsGranted(context)
-                unknownSourcesAllowed = PermissionUtil.isUnknownSourcesAllowed(context)
                 storageAccessGranted = PermissionUtil.isStorageAccessGranted(context)
             }
         }
@@ -161,13 +147,9 @@ internal fun OnboardingScreen(
     OnboardingScreenContent(
         notificationsGranted = notificationsGranted,
         storageAccessGranted = storageAccessGranted,
-        unknownSourcesAllowed = unknownSourcesAllowed,
         storageDirectoryUri = filePath,
         grantedPermissions = grantedPermissions,
         finishOnboarding = viewModel::completeOnboarding,
-        openUnknownSourcesSettings = {
-            unknownSourcesSettingsLauncher.launch(PermissionUtil.createUnknownSourcesIntent(context.packageName))
-        },
         openStorageDirectoryPicker = { storageDirectoryPicker.launch(null) },
         requestNotificationsPermission = {
             if (Build.VERSION.SDK_INT >= 33) {
@@ -198,12 +180,10 @@ internal fun OnboardingScreen(
 private fun OnboardingScreenContent(
     notificationsGranted: Boolean,
     storageAccessGranted: Boolean,
-    unknownSourcesAllowed: Boolean,
     storageDirectoryUri: String?,
     grantedPermissions: List<GrantedPermissionItem>,
     requestNotificationsPermission: () -> Unit,
     requestStorageAccess: () -> Unit,
-    openUnknownSourcesSettings: () -> Unit,
     openStorageDirectoryPicker: () -> Unit,
     finishOnboarding: () -> Unit,
     initialStepIndex: Int = 0,
@@ -391,7 +371,6 @@ private fun OnboardingScreenBasePreview() {
         ) {
             OnboardingScreenContent(
                 notificationsGranted = false,
-                unknownSourcesAllowed = false,
                 storageAccessGranted = false,
                 storageDirectoryUri = null,
                 grantedPermissions = listOf(
@@ -406,7 +385,6 @@ private fun OnboardingScreenBasePreview() {
                 ),
                 requestNotificationsPermission = {},
                 requestStorageAccess = {},
-                openUnknownSourcesSettings = {},
                 openStorageDirectoryPicker = {},
                 finishOnboarding = {},
             )
@@ -453,7 +431,6 @@ private fun OnboardingScreenPermissionsStepPreview() {
         ) {
             OnboardingScreenContent(
                 notificationsGranted = false,
-                unknownSourcesAllowed = false,
                 storageAccessGranted = false,
                 storageDirectoryUri = null,
                 grantedPermissions = listOf(
@@ -464,7 +441,6 @@ private fun OnboardingScreenPermissionsStepPreview() {
                 ),
                 requestNotificationsPermission = {},
                 requestStorageAccess = {},
-                openUnknownSourcesSettings = {},
                 openStorageDirectoryPicker = {},
                 finishOnboarding = {},
                 initialStepIndex = OnboardingStep.Permissions.ordinal,
@@ -482,13 +458,11 @@ private fun OnboardingScreenStorageStepPreview() {
         ) {
             OnboardingScreenContent(
                 notificationsGranted = true,
-                unknownSourcesAllowed = true,
                 storageAccessGranted = true,
                 storageDirectoryUri = null,
                 grantedPermissions = emptyList(),
                 requestStorageAccess = {},
                 requestNotificationsPermission = {},
-                openUnknownSourcesSettings = {},
                 openStorageDirectoryPicker = {},
                 finishOnboarding = {},
                 initialStepIndex = OnboardingStep.Storage.ordinal,
@@ -506,13 +480,11 @@ private fun OnboardingScreenNextStepsStepPreview() {
         ) {
             OnboardingScreenContent(
                 notificationsGranted = true,
-                unknownSourcesAllowed = true,
                 storageAccessGranted = true,
                 storageDirectoryUri = "content://com.android.externalstorage.documents/tree/primary%3AFlixclusive",
                 grantedPermissions = emptyList(),
                 requestStorageAccess = {},
                 requestNotificationsPermission = {},
-                openUnknownSourcesSettings = {},
                 openStorageDirectoryPicker = {},
                 finishOnboarding = {},
                 initialStepIndex = OnboardingStep.FinishUp.ordinal,
