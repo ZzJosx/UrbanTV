@@ -215,7 +215,7 @@ private fun OnboardingScreenContent(
 
     val isContinueEnabled = when (OnboardingStep.entries[currentStep]) {
         OnboardingStep.Welcome -> true
-        OnboardingStep.Permissions -> unknownSourcesAllowed
+        OnboardingStep.Permissions -> true
         OnboardingStep.Storage -> isStorageSelected
         OnboardingStep.FinishUp -> true
     }
