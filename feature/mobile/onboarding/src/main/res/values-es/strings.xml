@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_title">¡Bienvenido a UrbanTV!</string>
+    <string name="onboarding_welcome_desc">Configuraremos lo esencial para comenzar.</string>
+    <string name="onboarding_permission_notifications_desc">Para avisos de reproducción y descargas</string>
+    <string name="onboarding_permission_unknown_sources_desc">No es necesario para usar UrbanTV</string>
+    <string name="onboarding_permission_storage_access_desc">Para acceder a archivos locales si lo deseas</string>
+    <string name="onboarding_permissions_title">Permisos</string>
+    <string name="onboarding_permissions_desc">Solo pediremos los permisos opcionales que necesites.</string>
+    <string name="onboarding_permission_unknown_sources_title">Instalar aplicaciones desconocidas</string>
+    <string name="onboarding_permission_storage_access_title">Acceso a almacenamiento</string>
+    <string name="onboarding_permission_notifications_title">Notificaciones</string>
+    <string name="onboarding_permissions_required_hint">Puedes continuar sin conceder permisos opcionales.</string>
+    <string name="onboarding_permissions_view_granted_button">Ver los permisos concedidos</string>
+    <string name="onboarding_permissions_granted_sheet_title">Permisos concedidos</string>
+    <string name="onboarding_permissions_granted_sheet_desc">Permisos que Android ya ha concedido a esta aplicación.</string>
+    <string name="onboarding_permissions_granted_sheet_empty">No hay otros permisos concedidos.</string>
+    <string name="onboarding_storage_title">Carpeta de archivos</string>
+    <string name="onboarding_storage_desc">Elige una carpeta propia para los datos y descargas que decidas guardar. No necesitamos acceder a todos los archivos de tu dispositivo.</string>
+    <string name="onboarding_storage_current_label">Carpeta seleccionada</string>
+    <string name="onboarding_storage_not_selected">Sin seleccionar</string>
+    <string name="onboarding_storage_pick_button">Elegir carpeta</string>
+    <string name="onboarding_storage_tip">Recomendación: crea una carpeta llamada UrbanTV y utiliza solo esa carpeta para los archivos de la app.</string>
+    <string name="onboarding_storage_required_hint">Elige una carpeta para continuar.</string>
+    <string name="onboarding_finish_up_title">¡Todo listo!</string>
+    <string name="onboarding_finish_up_desc">Crea tu perfil y explora tu biblioteca. Usa solo proveedores de contenido autorizados y confiables.</string>
+</resources>
