@@ -4,17 +4,23 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Impedir que los módulos agreguen permiso para instalar otras APK -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"
-            tools:ignore="RequestInstallPackagesPolicy" />
+        tools:node="remove" />
 
     <!-- For reading files -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <!-- For writing files (if needed) -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <!-- For Android 10+ -->
+    <!-- No se necesita acceso irrestricto al sistema de archivos -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-            tools:ignore="AllFilesAccessPolicy,ScopedStorage" />
+        tools:node="remove" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"
+        tools:node="remove" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -22,7 +28,8 @@
 
     <application
         android:name=".FlixclusiveApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:usesCleartextTraffic="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
