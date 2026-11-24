@@ -349,12 +349,7 @@ private fun FeaturedFilmHero(
             .clip(RoundedCornerShape(24.dp))
             .background(shadow),
     ) {
-        AsyncImage(
-            model = film.poster,
-            contentDescription = "Imagen de ${film.title}",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop,
-        )
+        UrbanFilmArtwork(film = film, modifier = Modifier.fillMaxSize())
         Box(
             modifier = Modifier.fillMaxSize().background(
                 Brush.verticalGradient(
@@ -444,12 +439,7 @@ private fun FilmPosterCard(film: OpenFilm, onClick: () -> Unit) {
                 .clip(RoundedCornerShape(16.dp))
                 .background(shadow),
         ) {
-            AsyncImage(
-                model = film.poster,
-                contentDescription = "Portada de ${film.title}",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-            )
+            UrbanFilmArtwork(film = film, modifier = Modifier.fillMaxSize())
             Surface(
                 color = Color(0xDD113336),
                 shape = RoundedCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
@@ -545,12 +535,17 @@ private fun SearchResultRow(
                 contentAlignment = Alignment.Center,
             ) {
                 if (artwork != null) {
-                    AsyncImage(
-                        model = artwork,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                    )
+                    val openFilm = openFilms.firstOrNull { it.poster == artwork }
+                    if (openFilm != null) {
+                        UrbanFilmArtwork(film = openFilm, modifier = Modifier.fillMaxSize())
+                    } else {
+                        AsyncImage(
+                            model = artwork,
+                            contentDescription = title,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop,
+                        )
+                    }
                 } else {
                     Text("▶", color = accent, style = MaterialTheme.typography.titleLarge)
                 }
