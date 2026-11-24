@@ -198,7 +198,7 @@ private fun HomeScreenContent(
                     modifier = Modifier.fillMaxSize(),
                 ) { isEmpty ->
                     if (isEmpty) {
-                        OpenCinemaScreen()
+                        UrbanTVExploreScreen()
                     } else {
                         val updatedData by rememberUpdatedState(data)
                         val catalogValues by remember {
