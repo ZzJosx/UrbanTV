@@ -5,7 +5,7 @@ compileSdk = "36"
 targetSdk = "36"
 minSdk = "23"
 app-id = "com.flixclusive"
-app-name = "Flixclusive"
+app-name = "UrbanTV"
 
 # App Versioning ==
 app-version-release-major = "3"
