@@ -5,6 +5,7 @@ on:
     branches:
       - feature/urbantv-branding-v1
       - security/urbantv-hardening-v1
+      - security/urbantv-permissions-v2
   workflow_dispatch:
 
 permissions:
@@ -39,10 +40,21 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Compilar
         run: chmod +x gradlew && ./gradlew :app-mobile:assembleDebug --no-daemon --stacktrace
+      - name: Verificar que APK no solicite permisos sensibles
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK_PATH=$(find app-mobile/build/outputs/apk/debug -name '*.apk' -type f | head -n 1)
+          test -n "$APK_PATH"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump permissions "$APK_PATH" | tee /tmp/urbantv-permissions.txt
+          if grep -E 'android.permission.(REQUEST_INSTALL_PACKAGES|MANAGE_EXTERNAL_STORAGE|REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)' /tmp/urbantv-permissions.txt; then
+            echo "::error::El APK contiene permisos restringidos"
+            exit 1
+          fi
       - name: Adjuntar APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: UrbanTV-security-debug-apk
+          name: UrbanTV-permissions-v2-debug-apk
           path: app-mobile/build/outputs/apk/debug/*.apk
           if-no-files-found: error
