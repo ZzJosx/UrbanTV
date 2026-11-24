@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,16 +12,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,18 +25,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.PlayerView
 import coil3.compose.AsyncImage
 
 /**
@@ -116,7 +102,7 @@ internal fun OpenCinemaScreen() {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 88.dp, bottom = 110.dp),
+        contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 12.dp, bottom = 110.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         item {
@@ -229,91 +215,13 @@ internal fun OpenCinemaScreen() {
     }
 
     selectedFilm?.let { film ->
-        OpenCinemaPlayer(film = film, onDismiss = { selectedFilm = null })
+        UrbanTVVideoPlayer(
+            title = film.title,
+            video = film.video,
+            description = film.synopsis,
+            credits = film.attribution,
+            onDismiss = { selectedFilm = null },
+        )
     }
 }
 
-@Composable
-private fun OpenCinemaPlayer(
-    film: OpenFilm,
-    onDismiss: () -> Unit,
-) {
-    val context = LocalContext.current
-    val player = remember(film.video) {
-        ExoPlayer.Builder(context).build().apply {
-            setMediaItem(MediaItem.fromUri(film.video))
-            prepare()
-            playWhenReady = true
-        }
-    }
-
-    DisposableEffect(player) {
-        onDispose {
-            player.stop()
-            player.release()
-        }
-    }
-
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false),
-    ) {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color(0xFF080E18),
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize().padding(vertical = 28.dp, horizontal = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = film.title,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier.weight(1f),
-                    )
-                    TextButton(onClick = onDismiss) {
-                        Text("Cerrar")
-                    }
-                }
-                AndroidView(
-                    factory = { ctx ->
-                        PlayerView(ctx).apply {
-                            this.player = player
-                            useController = true
-                        }
-                    },
-                    update = { it.player = player },
-                    modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f),
-                )
-                Text(
-                    text = film.category,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = Color.White,
-                )
-                Text(
-                    text = film.synopsis,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFFD0DAE8),
-                )
-                Text(
-                    text = film.attribution,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFFB0BDCD),
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Si el vídeo no carga, comprueba tu conexión o inténtalo después. " +
-                        "No es necesario conceder permisos especiales.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFFB0BDCD),
-                )
-            }
-        }
-    }
-}
