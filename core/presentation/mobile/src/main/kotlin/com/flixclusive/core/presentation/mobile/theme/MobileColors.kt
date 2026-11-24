@@ -10,11 +10,11 @@ import com.flixclusive.core.presentation.common.theme.Elevations.getElevationFor
  * Object to hold mobile-specific color definitions if needed in the future.
  * */
 object MobileColors {
-    val darkBackground = Color(0xFF121212)
+    val darkBackground = Color(0xFF080E18)
     val darkOnBackground = Color(0xFFFFFFFF)
-    val darkSurface = Color(0xFF121212)
+    val darkSurface = Color(0xFF101927)
     val darkOnSurface = Color(0xFFFFFFFF)
-    val darkSurfaceVariant = Color(0xFF282828)
+    val darkSurfaceVariant = Color(0xFF1A2937)
     val darkOnSurfaceVariant = Color(0xFFFFFFFF)
 
     /**
