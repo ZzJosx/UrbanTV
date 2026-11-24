@@ -8,7 +8,9 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
-import java.time.LocalDate
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 /**
  * Consulta únicamente la API oficial de TMDB.
@@ -59,15 +61,19 @@ internal object TmdbCatalogClient {
                     mapOf("language" to "es-PE"))
             }
             TmdbShelf.NEW -> {
-                val now = LocalDate.now()
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val today = Calendar.getInstance()
+                val todayText = dateFormat.format(today.time)
+                today.add(Calendar.MONTH, -5)
+                val fiveMonthsAgo = dateFormat.format(today.time)
                 fetchTitles("/discover/movie", token, "movie",
                     mapOf(
                         "language" to "es-PE",
                         "region" to "PE",
                         "watch_region" to "PE",
                         "with_watch_monetization_types" to "flatrate",
-                        "primary_release_date.gte" to now.minusMonths(5).toString(),
-                        "primary_release_date.lte" to now.toString(),
+                        "primary_release_date.gte" to fiveMonthsAgo,
+                        "primary_release_date.lte" to todayText,
                         "vote_count.gte" to "3",
                         "sort_by" to "primary_release_date.desc",
                         "include_adult" to "false",
