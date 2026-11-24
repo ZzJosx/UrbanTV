@@ -41,7 +41,7 @@ import androidx.compose.ui.window.Dialog
  * Los títulos NO representan un ranking actualizado ni garantizan disponibilidad en Perú.
  * Para rankings dinámicos y pósteres oficiales, integrar TMDB con atribución y API propia.
  */
-private enum class Platform(val display: String, val site: String, val color: Color) {
+internal enum class Platform(val display: String, val site: String, val color: Color) {
     NETFLIX("Netflix", "https://www.netflix.com/pe/", Color(0xFFE50914)),
     PRIME("Prime Video", "https://www.primevideo.com/", Color(0xFF00A8E1)),
     CRUNCHYROLL("Crunchyroll", "https://www.crunchyroll.com/", Color(0xFFFF9000)),
@@ -50,14 +50,14 @@ private enum class Platform(val display: String, val site: String, val color: Co
     APPLE("Apple TV+", "https://tv.apple.com/pe", Color(0xFFC3DBD7)),
 }
 
-private data class FeaturedTitle(
+internal data class FeaturedTitle(
     val name: String,
     val platform: Platform,
     val kind: String,
     val description: String,
 )
 
-private val featuredTitles = listOf(
+internal val featuredTitles = listOf(
     FeaturedTitle("Stranger Things", Platform.NETFLIX, "Serie", "Misterio y ciencia ficción en Hawkins."),
     FeaturedTitle("Wednesday", Platform.NETFLIX, "Serie", "Una investigación sobrenatural en Nevermore."),
     FeaturedTitle("El juego del calamar", Platform.NETFLIX, "Serie", "Competencias extremas con secretos y tensión."),
