@@ -63,7 +63,8 @@ internal class InitializeProvidersUseCaseImpl @Inject constructor(
             mutex.withLock {
                 val userId = userSessionDataStore.currentUserId.filterNotNull().first()
 
-                initializeDebugProviders(userId)
+                // UrbanTV personal: no descubrir ni ejecutar plugins colocados en carpetas externas.
+                // Solo se cargan proveedores instalados expresamente desde la app.
                 val providers = providerRepository.getProviders(userId)
 
                 providers.forEach { providerWrapper ->
