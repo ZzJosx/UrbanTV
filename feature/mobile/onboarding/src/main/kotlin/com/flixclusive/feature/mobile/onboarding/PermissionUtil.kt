@@ -51,25 +51,6 @@ internal object PermissionUtil {
         }
     }
 
-    @Suppress("DEPRECATION")
-    fun isUnknownSourcesAllowed(context: Context): Boolean {
-        return when {
-            Build.VERSION.SDK_INT >= 26 -> {
-                context.packageManager.canRequestPackageInstalls()
-            }
-
-            else -> {
-                runCatching {
-                    Settings.Secure.getInt(
-                        context.contentResolver,
-                        Settings.Secure.INSTALL_NON_MARKET_APPS,
-                        0,
-                    ) == 1
-                }.getOrDefault(true)
-            }
-        }
-    }
-
     fun getPreGrantedPermissions(
         context: Context,
         excludedPermissions: Set<String>,
@@ -124,14 +105,4 @@ internal object PermissionUtil {
             .toList()
     }
 
-    fun createUnknownSourcesIntent(packageName: String): Intent {
-        return when {
-            Build.VERSION.SDK_INT >= 26 -> Intent(
-                Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                "package:$packageName".toUri(),
-            )
-
-            else -> Intent(Settings.ACTION_SECURITY_SETTINGS)
-        }
-    }
 }
