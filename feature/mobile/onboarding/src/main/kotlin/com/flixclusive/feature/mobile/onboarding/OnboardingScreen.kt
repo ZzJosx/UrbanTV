@@ -286,12 +286,10 @@ private fun OnboardingScreenContent(
 
                     OnboardingStep.Permissions -> PermissionsStep(
                         notificationsGranted = notificationsGranted,
-                        unknownSourcesAllowed = unknownSourcesAllowed,
                         storageAccessGranted = storageAccessGranted,
                         grantedPermissions = grantedPermissions,
                         requestStorageAccess = requestStorageAccess,
                         requestNotificationsPermission = requestNotificationsPermission,
-                        openUnknownSourcesSettings = openUnknownSourcesSettings,
                     )
 
                     OnboardingStep.Storage -> StorageStep(
