@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ProviderPreferences(
     val shouldWarnBeforeInstall: Boolean = true,
-    val isAutoUpdateEnabled: Boolean = true,
+    val isAutoUpdateEnabled: Boolean = false,
     val shouldAddDebugPrefix: Boolean = true,
     @Deprecated(
         "This field is no longer used, as provider data has been migrated to Room. This field will be removed in a future version."
