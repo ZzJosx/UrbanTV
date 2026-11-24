@@ -122,7 +122,7 @@ internal fun OpenCinemaScreen() {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(
-                    text = "URBANTV ORIGINAL",
+                    text = "CINE GRATUITO · BLENDER",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
