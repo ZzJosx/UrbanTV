@@ -10,10 +10,10 @@ data class SystemPreferences(
     val isFirstTimeUserLaunch: Boolean = true,
     val storageDirectoryUri: String? = null,
     val lastSeenChangelogs: Long = -1L,
-    val isUsingAutoUpdateAppFeature: Boolean = true,
+    val isUsingAutoUpdateAppFeature: Boolean = false,
     @Deprecated("This field is no longer used and will be removed in future versions.")
     val isUsingPrereleaseUpdates: Boolean = false,
-    val isSendingCrashLogsAutomatically: Boolean = true,
+    val isSendingCrashLogsAutomatically: Boolean = false,
     val dns: DoHPreference = DoHPreference.None,
     val userAgent: String = USER_AGENT,
 ) : FlixclusivePrefs
