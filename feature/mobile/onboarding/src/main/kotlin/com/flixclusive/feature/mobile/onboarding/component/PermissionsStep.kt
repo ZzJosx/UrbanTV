@@ -75,7 +75,7 @@ internal fun PermissionsStep(
             badgeLabel = stringResource(R.string.onboarding_permission_unknown_sources_desc),
             checked = unknownSourcesAllowed,
             enabled = true,
-            isRequired = true,
+            isRequired = false,
             onToggle = openUnknownSourcesSettings,
         )
 
