@@ -163,7 +163,7 @@ private fun HomeScreenContent(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 HomeScreenTopBar(
-                    title = stringResource(LocaleR.string.home),
+                    title = "UrbanTV",
                     containerAlpha = { appBarContainerAlpha },
                     onFilterClick = { isSheetOpen = true },
                     enableFilterButton = { providers().let { it is Async.Success && it.data.isNotEmpty() } },
