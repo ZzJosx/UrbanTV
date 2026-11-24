@@ -16,7 +16,8 @@ android {
     namespace = appId
 
     defaultConfig {
-        applicationId = appId
+        // Identidad de instalacion propia; el namespace interno sigue siendo com.flixclusive.
+        applicationId = "com.urbantv.personal"
         versionCode = releaseVersionCode
         versionName = releaseVersionName
         vectorDrawables {
