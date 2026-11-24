@@ -10,6 +10,7 @@ on:
       - feature/urbantv-open-cinema-v1
       - feature/urbantv-platforms-and-m3u-v1
       - feature/urbantv-premium-home-v1
+      - feature/urbantv-tmdb-live-v1
   workflow_dispatch:
 
 permissions:
@@ -68,6 +69,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: UrbanTV-premium-home-debug-apk
+          name: UrbanTV-tmdb-live-debug-apk
           path: app-mobile/build/outputs/apk/debug/*.apk
           if-no-files-found: error
