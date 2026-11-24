@@ -3,15 +3,10 @@ package com.flixclusive.feature.mobile.user.add
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.flixclusive.core.common.dispatchers.AppDispatchers
-import com.flixclusive.core.common.provider.ProviderConstants
-import com.flixclusive.core.database.entity.provider.InstalledRepository
 import com.flixclusive.core.database.entity.user.User
 import com.flixclusive.data.database.repository.LibraryListRepository
 import com.flixclusive.data.database.repository.UserAuthRepository
 import com.flixclusive.data.database.repository.UserRepository
-import com.flixclusive.data.provider.repository.InstalledRepoRepository
-import com.flixclusive.model.provider.Repository
-import com.flixclusive.model.provider.Repository.Companion.toValidRepositoryLink
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +26,6 @@ class AddUserViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val userAuthRepository: UserAuthRepository,
     private val libraryListRepository: LibraryListRepository,
-    private val installedRepoRepository: InstalledRepoRepository,
     private val appDispatchers: AppDispatchers,
 ) : ViewModel() {
     val images by lazy {
@@ -66,7 +60,6 @@ class AddUserViewModel @Inject constructor(
 
             userRepository.addUser(validatedUser)
             libraryListRepository.seedLists(userId)
-            seedRepositories(userId)
 
             if (isSigningIn) {
                 userAuthRepository.signIn(validatedUser)
@@ -76,25 +69,4 @@ class AddUserViewModel @Inject constructor(
         }
     }
 
-    private suspend fun seedRepositories(id: String) {
-        installedRepoRepository.insert(
-            ProviderConstants.PROVIDER_DEFAULT_REPOSITORY
-                .toValidRepositoryLink()
-                .toInstalledRepository(userId = id)
-        )
-
-        installedRepoRepository.insert(
-            ProviderConstants.PROVIDER_DEFAULT_REPOSITORY_2
-                .toValidRepositoryLink()
-                .toInstalledRepository(userId = id)
-        )
-    }
-
-    private fun Repository.toInstalledRepository(userId: String) = InstalledRepository(
-        url = url,
-        name = name,
-        owner = owner,
-        rawLinkFormat = rawLinkFormat,
-        userId = userId,
-    )
 }
