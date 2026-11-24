@@ -38,7 +38,7 @@ import coil3.compose.AsyncImage
  * con créditos explícitos al proyecto Blender y licencias Creative Commons.
  * Nunca se realizan búsquedas de servidores no verificados ni descargas de plugins.
  */
-private data class OpenFilm(
+internal data class OpenFilm(
     val title: String,
     val year: Int,
     val category: String,
@@ -50,7 +50,7 @@ private data class OpenFilm(
 
 private const val SAMPLE_ROOT = "https://storage.googleapis.com/gtv-videos-bucket/sample/"
 
-private val openFilms = listOf(
+internal val openFilms = listOf(
     OpenFilm(
         title = "Big Buck Bunny",
         year = 2008,
