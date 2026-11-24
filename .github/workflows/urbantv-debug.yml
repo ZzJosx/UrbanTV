@@ -6,6 +6,7 @@ on:
       - feature/urbantv-branding-v1
       - security/urbantv-hardening-v1
       - security/urbantv-permissions-v2
+      - fix/urbantv-onboarding-security-exception
   workflow_dispatch:
 
 permissions:
@@ -38,6 +39,15 @@ jobs:
           "$SDKMANAGER" --install "platforms;android-36" "build-tools;36.0.0"
       - name: Configurar Gradle
         uses: gradle/actions/setup-gradle@v4
+      - name: Evitar regresion de permiso de instalacion
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RnE 'canRequestPackageInstalls|isUnknownSourcesAllowed|createUnknownSourcesIntent|ACTION_MANAGE_UNKNOWN_APP_SOURCES' feature/mobile/onboarding/src/main; then
+            echo "::error::El asistente contiene una llamada insegura al permiso de instalar APK"
+            exit 1
+          fi
+          echo "OK: asistente sin APIs de instalacion externa."
       - name: Compilar
         run: chmod +x gradlew && ./gradlew :app-mobile:assembleDebug --no-daemon --stacktrace
       - name: Verificar que APK no solicite permisos sensibles
@@ -55,6 +65,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: UrbanTV-permissions-v2-debug-apk
+          name: UrbanTV-onboarding-fix-debug-apk
           path: app-mobile/build/outputs/apk/debug/*.apk
           if-no-files-found: error
