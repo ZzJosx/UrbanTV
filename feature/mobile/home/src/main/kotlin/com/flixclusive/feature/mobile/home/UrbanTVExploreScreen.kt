@@ -58,7 +58,7 @@ private val shadow = Color(0xFF121F31)
 @Composable
 internal fun UrbanTVExploreScreen() {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
-    val tabs = listOf("Descubrir", "Cine gratis", "Series y anime", "TV en vivo")
+    val tabs = listOf("Descubrir", "Estrenos", "Cine gratis", "Series y anime", "TV en vivo")
 
     Column(modifier = Modifier.fillMaxSize().background(midnight)) {
         Spacer(modifier = Modifier.height(76.dp))
@@ -80,8 +80,9 @@ internal fun UrbanTVExploreScreen() {
         Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
             when (selectedTab) {
                 0 -> UrbanTVDiscoverScreen(onNavigate = { selectedTab = it })
-                1 -> OpenCinemaScreen()
-                2 -> TopPlatformsScreen()
+                1 -> TmdbLiveScreen()
+                2 -> OpenCinemaScreen()
+                3 -> TopPlatformsScreen()
                 else -> PublicTVScreen()
             }
         }
@@ -143,6 +144,37 @@ private fun UrbanTVDiscoverScreen(onNavigate: (Int) -> Unit) {
             )
         }
 
+        if (search.isEmpty()) {
+            item {
+                Surface(
+                    onClick = { onNavigate(1) },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp),
+                    color = Color(0xFF142C39),
+                    shape = RoundedCornerShape(18.dp),
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(15.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column(modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            Text("ESTRENOS Y TOP DEL MOMENTO", color = cyan,
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold)
+                            Text("Netflix · Prime · Max · Anime",
+                                color = Color.White,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold)
+                            Text("Pósteres reales y tendencias de TMDB",
+                                color = Color(0xFFC2D2DF),
+                                style = MaterialTheme.typography.bodySmall)
+                        }
+                        Text("›", color = cyan, style = MaterialTheme.typography.headlineLarge)
+                    }
+                }
+            }
+        }
         if (search.isNotEmpty()) {
             item {
                 SectionHeading(
@@ -188,14 +220,14 @@ private fun UrbanTVDiscoverScreen(onNavigate: (Int) -> Unit) {
                 FeaturedFilmHero(
                     film = openFilms[1],
                     onWatch = { selectedFilm = openFilms[1] },
-                    onBrowse = { onNavigate(1) },
+                    onBrowse = { onNavigate(2) },
                 )
             }
             item {
                 SectionHeading(
                     title = "Reproduce ahora",
                     subtitle = "Cortometrajes gratuitos y autorizados",
-                    onMore = { onNavigate(1) },
+                    onMore = { onNavigate(2) },
                 )
             }
             item {
@@ -215,7 +247,7 @@ private fun UrbanTVDiscoverScreen(onNavigate: (Int) -> Unit) {
                 SectionHeading(
                     title = "Series que dan de qué hablar",
                     subtitle = "Descubre títulos conocidos de varias plataformas",
-                    onMore = { onNavigate(2) },
+                    onMore = { onNavigate(3) },
                 )
             }
             item {
@@ -236,7 +268,7 @@ private fun UrbanTVDiscoverScreen(onNavigate: (Int) -> Unit) {
                 SectionHeading(
                     title = "Universo anime",
                     subtitle = "Aventuras, acción y fantasía",
-                    onMore = { onNavigate(2) },
+                    onMore = { onNavigate(3) },
                     moreLabel = "Explorar",
                 )
             }
@@ -257,7 +289,7 @@ private fun UrbanTVDiscoverScreen(onNavigate: (Int) -> Unit) {
             item {
                 Surface(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp),
-                    onClick = { onNavigate(3) },
+                    onClick = { onNavigate(4) },
                     shape = RoundedCornerShape(20.dp),
                     color = shadow,
                 ) {
