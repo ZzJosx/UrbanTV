@@ -197,7 +197,6 @@ private suspend fun fetchPublicChannels(): List<PublicChannel> = withContext(Dis
         var lastGroup = ""
         var chars = 0
         var lines = 0
-        val groupPattern = Regex("group-title=\\\"([^\\\"]*)\\\"")
         connection.inputStream.bufferedReader(Charsets.UTF_8).use { reader ->
             while (channels.size < MAX_CHANNELS && lines < MAX_PLAYLIST_LINES) {
                 val line = reader.readLine()?.trim() ?: break
@@ -207,7 +206,10 @@ private suspend fun fetchPublicChannels(): List<PublicChannel> = withContext(Dis
 
                 if (line.startsWith("#EXTINF:", ignoreCase = true)) {
                     lastTitle = line.substringAfterLast(',', "Canal sin nombre").take(110)
-                    lastGroup = groupPattern.find(line)?.groupValues?.getOrNull(1).orEmpty().take(70)
+                    lastGroup = line.substringAfter("group-title=", "")
+                        .substringAfter('"', "")
+                        .substringBefore('"', "")
+                        .take(70)
                 } else if (line.startsWith("https://", ignoreCase = true)) {
                     val uri = Uri.parse(line)
                     if (uri.scheme == "https" && !uri.host.isNullOrBlank()) {
