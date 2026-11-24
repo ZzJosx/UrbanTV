@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/urbantv-branding-v1
+      - security/urbantv-hardening-v1
   workflow_dispatch:
 
 permissions:
@@ -42,6 +43,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: UrbanTV-debug-apk
+          name: UrbanTV-security-debug-apk
           path: app-mobile/build/outputs/apk/debug/*.apk
           if-no-files-found: error
