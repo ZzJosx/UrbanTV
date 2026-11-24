@@ -29,7 +29,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 
 /**
  * Pequeño catálogo independiente de plugins con cortometrajes abiertos.
@@ -48,16 +47,14 @@ internal data class OpenFilm(
     val attribution: String,
 )
 
-private const val SAMPLE_ROOT = "https://storage.googleapis.com/gtv-videos-bucket/sample/"
-
 internal val openFilms = listOf(
     OpenFilm(
         title = "Big Buck Bunny",
         year = 2008,
         category = "Animación · Cortometraje",
         synopsis = "Un conejo gigante vive una inesperada aventura en el bosque.",
-        poster = SAMPLE_ROOT + "images/BigBuckBunny.jpg",
-        video = SAMPLE_ROOT + "BigBuckBunny.mp4",
+        poster = "https://commons.wikimedia.org/wiki/Special:FilePath/Big_buck_bunny_poster_big.jpg?width=600",
+        video = "https://video.blender.org/static/webseed/bf1f3fb5-b119-4f9f-9930-8e20e892b898-720.mp4",
         attribution = "© Blender Foundation / peach.blender.org · CC BY 3.0",
     ),
     OpenFilm(
@@ -65,8 +62,8 @@ internal val openFilms = listOf(
         year = 2010,
         category = "Fantasía · Cortometraje",
         synopsis = "Una joven emprende un viaje para encontrar a su pequeño dragón.",
-        poster = SAMPLE_ROOT + "images/Sintel.jpg",
-        video = SAMPLE_ROOT + "Sintel.mp4",
+        poster = "https://commons.wikimedia.org/wiki/Special:FilePath/Sintel_poster.jpg?width=600",
+        video = "https://video.blender.org/static/webseed/0eb052d0-fd51-43e6-aa33-ecdbf77a5d40-720.mp4",
         attribution = "© Blender Foundation / durian.blender.org · CC BY 3.0",
     ),
     OpenFilm(
@@ -74,8 +71,8 @@ internal val openFilms = listOf(
         year = 2012,
         category = "Ciencia ficción · Cortometraje",
         synopsis = "Una misión en una ciudad futurista explora la relación entre humanos y robots.",
-        poster = SAMPLE_ROOT + "images/TearsOfSteel.jpg",
-        video = SAMPLE_ROOT + "TearsOfSteel.mp4",
+        poster = "https://commons.wikimedia.org/wiki/Special:FilePath/Tos-poster.png?width=600",
+        video = "https://video.blender.org/static/webseed/8533ea43-4271-4a57-9694-e9d0b35e1aa1-720.mp4",
         attribution = "© Blender Foundation / mango.blender.org · CC BY 3.0",
     ),
     OpenFilm(
@@ -83,8 +80,8 @@ internal val openFilms = listOf(
         year = 2006,
         category = "Animación · Cortometraje",
         synopsis = "Dos personajes exploran un misterioso mundo de máquinas.",
-        poster = SAMPLE_ROOT + "images/ElephantsDream.jpg",
-        video = SAMPLE_ROOT + "ElephantsDream.mp4",
+        poster = "https://commons.wikimedia.org/wiki/Special:FilePath/ElephantsDreamPoster.jpg?width=600",
+        video = "https://video.blender.org/static/webseed/cccc3e60-0291-4ecc-aa56-39b2e2c7d0d5-720.mp4",
         attribution = "© Blender Foundation / elephantsdream.org · CC BY 2.5",
     ),
 )
@@ -154,10 +151,8 @@ internal fun OpenCinemaScreen() {
                     modifier = Modifier.fillMaxWidth().padding(10.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    AsyncImage(
-                        model = film.poster,
-                        contentDescription = "Portada de ${film.title}",
-                        contentScale = ContentScale.Crop,
+                    UrbanFilmArtwork(
+                        film = film,
                         modifier = Modifier
                             .width(118.dp)
                             .height(112.dp)
