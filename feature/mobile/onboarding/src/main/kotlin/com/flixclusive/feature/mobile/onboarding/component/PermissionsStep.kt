@@ -44,12 +44,10 @@ internal data class GrantedPermissionItem(
 @Composable
 internal fun PermissionsStep(
     notificationsGranted: Boolean,
-    unknownSourcesAllowed: Boolean,
     storageAccessGranted: Boolean,
     grantedPermissions: List<GrantedPermissionItem>,
     requestNotificationsPermission: () -> Unit,
     requestStorageAccess: () -> Unit,
-    openUnknownSourcesSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showGrantedPermissionsSheet by rememberSaveable { mutableStateOf(false) }
@@ -70,22 +68,13 @@ internal fun PermissionsStep(
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
         )
 
-        PermissionToggleCard(
-            title = stringResource(R.string.onboarding_permission_unknown_sources_title),
-            badgeLabel = stringResource(R.string.onboarding_permission_unknown_sources_desc),
-            checked = unknownSourcesAllowed,
-            enabled = true,
-            isRequired = false,
-            onToggle = openUnknownSourcesSettings,
-        )
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             PermissionToggleCard(
                 title = stringResource(R.string.onboarding_permission_storage_access_title),
                 badgeLabel = stringResource(R.string.onboarding_permission_storage_access_desc),
                 checked = storageAccessGranted,
                 enabled = true,
-                isRequired = true,
+                isRequired = false,
                 onToggle = requestStorageAccess,
             )
         }
