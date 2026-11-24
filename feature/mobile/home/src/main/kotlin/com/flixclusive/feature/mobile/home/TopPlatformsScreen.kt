@@ -1,6 +1,14 @@
 package com.flixclusive.feature.mobile.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -97,13 +105,22 @@ internal val featuredTitles = listOf(
 internal fun TopPlatformsScreen() {
     var search by rememberSaveable { mutableStateOf("") }
     var platform by rememberSaveable { mutableStateOf("Todas") }
+    var category by rememberSaveable { mutableStateOf("Todo") }
     var selected by remember { mutableStateOf<FeaturedTitle?>(null) }
     val filters = listOf("Todas") + Platform.entries.map { it.display }
-    val visible = featuredTitles.filter {
-        (platform == "Todas" || it.platform.display == platform) &&
+    val categories = listOf("Todo", "Películas", "Series", "Anime")
+    val visible = featuredTitles.filter { item ->
+        val matchesCategory = when (category) {
+            "Películas" -> item.kind == "Película"
+            "Series" -> item.kind.startsWith("Serie") && item.platform != Platform.CRUNCHYROLL
+            "Anime" -> item.platform == Platform.CRUNCHYROLL
+            else -> true
+        }
+        (platform == "Todas" || item.platform.display == platform) &&
+            matchesCategory &&
             (search.isBlank() ||
-                it.name.contains(search.trim(), ignoreCase = true) ||
-                it.kind.contains(search.trim(), ignoreCase = true))
+                item.name.contains(search.trim(), ignoreCase = true) ||
+                item.kind.contains(search.trim(), ignoreCase = true))
     }
 
     LazyColumn(
@@ -156,6 +173,27 @@ internal fun TopPlatformsScreen() {
                 }
             }
         }
+        item {
+            Row(
+                modifier = Modifier.horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                categories.forEach { name ->
+                    FilterChip(
+                        selected = category == name,
+                        onClick = { category = name },
+                        label = { Text(name) },
+                    )
+                }
+            }
+        }
+        item {
+            Text(
+                "${visible.size} títulos · Catálogo informativo",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelMedium,
+            )
+        }
         items(visible, key = { it.platform.display + it.name }) { item ->
             Card(
                 onClick = { selected = item },
@@ -166,15 +204,38 @@ internal fun TopPlatformsScreen() {
                     modifier = Modifier.fillMaxWidth().padding(15.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    Surface(color = item.platform.color.copy(alpha = 0.18f), shape = MaterialTheme.shapes.medium) {
-                        Column(modifier = Modifier.padding(12.dp)) {
-                            Text(
-                                text = item.kind.take(1).uppercase(),
-                                fontWeight = FontWeight.Black,
-                                color = item.platform.color,
-                                style = MaterialTheme.typography.headlineMedium,
+                    Box(
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(134.dp)
+                            .clip(RoundedCornerShape(14.dp))
+                            .background(
+                                Brush.linearGradient(
+                                    listOf(
+                                        item.platform.color.copy(alpha = 0.8f),
+                                        Color(0xFF1D2A42),
+                                        Color(0xFF080E18),
+                                    )
+                                )
                             )
-                        }
+                            .padding(10.dp),
+                    ) {
+                        Text(
+                            item.platform.display,
+                            modifier = Modifier.align(Alignment.TopStart),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Black,
+                            color = Color.White,
+                        )
+                        Text(
+                            item.name,
+                            modifier = Modifier.align(Alignment.BottomStart),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Black,
+                            color = Color.White,
+                            maxLines = 4,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
                     Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         Text(item.name, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
