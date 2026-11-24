@@ -17,7 +17,6 @@ import com.flixclusive.core.util.network.DoHProvider.dohNajalla
 import com.flixclusive.core.util.network.DoHProvider.dohQuad101
 import com.flixclusive.core.util.network.DoHProvider.dohQuad9
 import com.flixclusive.core.util.network.DoHProvider.dohSheCan
-import com.flixclusive.core.util.network.okhttp.ignoreAllSSLErrors
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,7 +44,6 @@ internal object OkHttpModule {
             .Builder()
             .followRedirects(true)
             .followSslRedirects(true)
-            .ignoreAllSSLErrors()
             .addInterceptor(UserAgentInterceptor(preferences.userAgent))
             .apply {
                 when (preferences.dns) {
