@@ -7,6 +7,7 @@ on:
       - security/urbantv-hardening-v1
       - security/urbantv-permissions-v2
       - fix/urbantv-onboarding-security-exception
+      - feature/urbantv-open-cinema-v1
   workflow_dispatch:
 
 permissions:
@@ -65,6 +66,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: UrbanTV-onboarding-fix-debug-apk
+          name: UrbanTV-open-cinema-debug-apk
           path: app-mobile/build/outputs/apk/debug/*.apk
           if-no-files-found: error
