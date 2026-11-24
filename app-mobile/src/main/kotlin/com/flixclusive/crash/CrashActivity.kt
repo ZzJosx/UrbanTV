@@ -40,25 +40,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.flixclusive.core.common.dispatchers.AppDispatchers
-import com.flixclusive.core.common.exception.CrashReportSender
 import com.flixclusive.core.presentation.common.extensions.showToast
 import com.flixclusive.core.presentation.mobile.theme.FlixclusiveTheme
 import com.flixclusive.core.strings.R
 import com.flixclusive.mobile.MobileActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 import com.flixclusive.core.drawables.R as UiCommonR
 
 @AndroidEntryPoint
 internal class CrashActivity : ComponentActivity() {
-    @Inject
-    lateinit var reportSender: CrashReportSender
-
-    @Inject
-    lateinit var appDispatchers: AppDispatchers
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -72,10 +62,6 @@ internal class CrashActivity : ComponentActivity() {
                         softwareInfo = softwareInfo,
                         errorMessage = errorMessage,
                         onDismiss = {
-                            appDispatchers.ioScope.launch {
-                                reportSender.send(errorLog = "$softwareInfo\n=======\n$errorMessage")
-                            }
-
                             finishAffinity()
                             startActivity(
                                 Intent(this, MobileActivity::class.java),
