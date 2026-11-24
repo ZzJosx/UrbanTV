@@ -197,7 +197,7 @@ private suspend fun fetchPublicChannels(): List<PublicChannel> = withContext(Dis
         var lastGroup = ""
         var chars = 0
         var lines = 0
-        val groupPattern = Regex("""group-title="([^"]*)"""")
+        val groupPattern = Regex("group-title=\\\"([^\\\"]*)\\\"")
         connection.inputStream.bufferedReader(Charsets.UTF_8).use { reader ->
             while (channels.size < MAX_CHANNELS && lines < MAX_PLAYLIST_LINES) {
                 val line = reader.readLine()?.trim() ?: break
