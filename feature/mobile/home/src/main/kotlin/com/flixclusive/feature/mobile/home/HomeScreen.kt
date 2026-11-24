@@ -198,9 +198,7 @@ private fun HomeScreenContent(
                     modifier = Modifier.fillMaxSize(),
                 ) { isEmpty ->
                     if (isEmpty) {
-                        EmptyScreenContent(
-                            openAddProviderScreen = navigator::navigateToAddProviderScreen,
-                        )
+                        OpenCinemaScreen()
                     } else {
                         val updatedData by rememberUpdatedState(data)
                         val catalogValues by remember {
