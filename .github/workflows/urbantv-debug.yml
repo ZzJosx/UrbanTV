@@ -11,6 +11,7 @@ on:
       - feature/urbantv-platforms-and-m3u-v1
       - feature/urbantv-premium-home-v1
       - feature/urbantv-tmdb-live-v1
+      - fix/urbantv-posters-playback-v6
   workflow_dispatch:
 
 permissions:
@@ -52,6 +53,13 @@ jobs:
             exit 1
           fi
           echo "OK: asistente sin APIs de instalacion externa."
+      - name: Rechazar enlaces GTV retirados
+        shell: bash
+        run: |
+          if grep -Rn 'gtv-videos-bucket' feature/mobile/home/src/main/kotlin/com/flixclusive/feature/mobile/home; then
+            echo "::error::UrbanTV contiene enlaces de vídeo GTV retirados (HTTP 403)"
+            exit 1
+          fi
       - name: Compilar
         run: chmod +x gradlew && ./gradlew :app-mobile:assembleDebug --no-daemon --stacktrace
       - name: Verificar que APK no solicite permisos sensibles
@@ -69,6 +77,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: UrbanTV-tmdb-live-debug-apk
+          name: UrbanTV-fix-imagenes-video-debug-apk
           path: app-mobile/build/outputs/apk/debug/*.apk
           if-no-files-found: error
